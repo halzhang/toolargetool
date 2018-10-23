@@ -30,7 +30,7 @@ public class ActivitySavedStateLogger extends EmptyActivityLifecycleCallbacks {
     public ActivitySavedStateLogger(int priority, @NonNull String tag, boolean logFragments, ILogger logger) {
         this.priority = priority;
         this.tag = tag;
-        fragmentLogger = logFragments ? new FragmentSavedStateLogger(priority, tag) : null;
+        fragmentLogger = logFragments ? new FragmentSavedStateLogger(priority, tag, logger) : null;
         mLogger = logger;
     }
 
