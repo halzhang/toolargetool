@@ -17,19 +17,29 @@ import java.util.Map;
 public class ActivitySavedStateLogger extends EmptyActivityLifecycleCallbacks {
 
     private int priority;
-    @NonNull private String tag;
-    @Nullable private final FragmentSavedStateLogger fragmentLogger;
-    @NonNull private final Map<Activity, Bundle> savedStates = new HashMap<>();
+    @NonNull
+    private String tag;
+    @Nullable
+    private final FragmentSavedStateLogger fragmentLogger;
+    @NonNull
+    private final Map<Activity, Bundle> savedStates = new HashMap<>();
     private boolean isLogging;
 
-    public ActivitySavedStateLogger(int priority, @NonNull String tag, boolean logFragments) {
+    private ILogger mLogger;
+
+    public ActivitySavedStateLogger(int priority, @NonNull String tag, boolean logFragments, ILogger logger) {
         this.priority = priority;
         this.tag = tag;
         fragmentLogger = logFragments ? new FragmentSavedStateLogger(priority, tag) : null;
+        mLogger = logger;
     }
 
     private void log(String msg) {
-        Log.println(priority, tag, msg);
+        if (mLogger != null) {
+            mLogger.println(priority, tag, msg);
+        } else {
+            Log.println(priority, tag, msg);
+        }
     }
 
     @Override

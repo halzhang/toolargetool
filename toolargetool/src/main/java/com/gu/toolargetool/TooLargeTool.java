@@ -33,7 +33,7 @@ public final class TooLargeTool {
      * Logged at DEBUG priority.
      *
      * @param bundle to log the breakdown of
-     * @param tag to log with
+     * @param tag    to log with
      */
     public static void logBundleBreakdown(String tag, @NonNull Bundle bundle) {
         Log.println(Log.DEBUG, tag, bundleBreakdown(bundle));
@@ -42,8 +42,8 @@ public final class TooLargeTool {
     /**
      * Helper method to print the result of {@link #bundleBreakdown(Bundle)} to ADB.
      *
-     * @param bundle to log the breakdown of
-     * @param tag to log with
+     * @param bundle   to log the breakdown of
+     * @param tag      to log with
      * @param priority to log with
      */
     public static void logBundleBreakdown(String tag, int priority, @NonNull Bundle bundle) {
@@ -63,7 +63,7 @@ public final class TooLargeTool {
                 "Bundle@%d contains %d keys and measures %,.1f KB when serialized as a Parcel",
                 System.identityHashCode(bundle), bundle.size(), KB(sizeAsParcel(bundle))
         );
-        for (Map.Entry<String, Integer> entry: valueSizes(bundle).entrySet()) {
+        for (Map.Entry<String, Integer> entry : valueSizes(bundle).entrySet()) {
             result += String.format(
                     Locale.UK,
                     "\n* %s = %,.1f KB",
@@ -140,7 +140,7 @@ public final class TooLargeTool {
     }
 
     private static float KB(int bytes) {
-        return ((float) bytes)/1000f;
+        return ((float) bytes) / 1000f;
     }
 
     /**
@@ -150,19 +150,19 @@ public final class TooLargeTool {
      * @param application to log
      */
     public static void startLogging(Application application) {
-        startLogging(application, Log.DEBUG, "TooLargeTool");
+        startLogging(application, Log.DEBUG, "TooLargeTool", null);
     }
 
     /**
      * Start logging information about all of the state saved by Activities and Fragments.
      *
      * @param application to log
-     * @param priority to write log messages at
-     * @param tag for log messages
+     * @param priority    to write log messages at
+     * @param tag         for log messages
      */
-    public static void startLogging(Application application, int priority, @NonNull String tag) {
+    public static void startLogging(Application application, int priority, @NonNull String tag, ILogger iLogger) {
         if (logger == null) {
-            logger = new ActivitySavedStateLogger(priority, tag, true);
+            logger = new ActivitySavedStateLogger(priority, tag, true, iLogger);
         } else {
             logger.setPriority(priority);
             logger.setTag(tag);

@@ -16,17 +16,26 @@ import java.util.Map;
 public class FragmentSavedStateLogger extends FragmentManager.FragmentLifecycleCallbacks {
 
     private final int priority;
-    @NonNull private final String tag;
-    @NonNull private final Map<Fragment, Bundle> savedStates = new HashMap<>();
+    @NonNull
+    private final String tag;
+    @NonNull
+    private final Map<Fragment, Bundle> savedStates = new HashMap<>();
     private boolean isLogging = true;
 
-    public FragmentSavedStateLogger(int priority, @NonNull String tag) {
+    private ILogger mLogger;
+
+    public FragmentSavedStateLogger(int priority, @NonNull String tag, ILogger logger) {
         this.priority = priority;
         this.tag = tag;
+        mLogger = logger;
     }
 
     private void log(String msg) {
-        Log.println(priority, tag, msg);
+        if (mLogger != null) {
+            mLogger.println(priority, tag, msg);
+        } else {
+            Log.println(priority, tag, msg);
+        }
     }
 
     @Override
